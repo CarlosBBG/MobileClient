@@ -48,3 +48,12 @@ Los permisos deben ser declarados en el `AndroidManifest.xml`.
 
 - **V8** se coloca dentro del dex en android y en JavaScriptCore en iOS
 - **Brigde** es el que mapea el código react native con el componente nativo
+
+
+### Recordatorio de conceptos básicos de React
+
+- **useState**: Se uttiliza para guardar datos que pueden cambiar en el tiempo.
+- **useEffect**: Se utiliza para ejecutar código cuando un componente se monta o se actualiza. Tiene dos argumentos, el primero es una función que se ejecuta y el segundo es un arreglo de dependencias. Tiene un parametro el valor inicial del estado.
+- **2 Casos en los que no se utiliza el estado en un componente**:
+  - La edad de una persona que se puede calcular a partir de su fecha de nacimiento.
+  - Cuando se utilizan las props para pasar datos a un componente.
