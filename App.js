@@ -5,6 +5,13 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 export default function App() {
+
+  //Un estado es una variable que se utiliza para almacenar datos que puede cambiar a lo largo del tiempo
+  //Un ejemplo que no tiene variable de estado es la edad de una persona que cambia pero se puede recuperar con la fecha de nacimiento 
+  //El componente se vuelve a renderizar debido a las props y estas no se almacenan en el estado
+  //useState tiene como parámetro el valor inicial del estado
+  //useState retorna un arreglo con dos elementos, el primero es el valor y el segundo es una función para modificar el valor
+
   const [restaurantes, setRestaurantes] = useState([]);
 
   // Función para cargar restaurantes
