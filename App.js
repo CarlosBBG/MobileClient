@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import ListaRestaurantes from './Components/ListaRestaurante';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import * as Location from 'expo-location';
 
 export default function App() {
 
@@ -13,11 +14,13 @@ export default function App() {
   //useState retorna un arreglo con dos elementos, el primero es el valor y el segundo es una función para modificar el valor
 
   const [restaurantes, setRestaurantes] = useState([]);
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
 
   // Función para cargar restaurantes
   const cargarRestaurantes = () => {
     axios
-      .get("http://172.29.42.234:8000/restaurantes")
+      .get("http://172.31.45.35:8000/restaurantes")
       .then((response) => {
         setRestaurantes(response.data);
       })
@@ -26,10 +29,20 @@ export default function App() {
       });
   };
 
-  // Ejecutar cargarRestaurantes solo una vez al montar el componente
+
+
   useEffect(() => {
-    cargarRestaurantes();
-  }, [0]); // Array vacío asegura que se ejecute solo al montar
+    (async () => {
+      var { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('No se ha concedido el permiso de acceso a la geo...');
+        return;
+      }
+      var location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
+    })();
+  }, []);
+
 
   return (
     <View style={styles.container}>
@@ -37,6 +50,12 @@ export default function App() {
         restaurantes={restaurantes}
         onRecargar={cargarRestaurantes} // Pasar la función sin memoización
       />
+      <View>
+        <Text>{errorMsg ? errorMsg :
+          JSON.stringify(location.coords.longitude)}</Text>
+        <Text>{errorMsg ? errorMsg :
+          JSON.stringify(location.coords.latitude)}</Text>
+      </View>
     </View>
   );
 }
