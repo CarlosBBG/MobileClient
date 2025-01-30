@@ -29,7 +29,10 @@ export default function App() {
       });
   };
 
-
+  // Ejecutar cargarRestaurantes solo una vez al montar el componente
+  useEffect(() => {
+    cargarRestaurantes();
+  }, [0]); // Array vacío asegura que se ejecute solo al montar
 
   useEffect(() => {
     (async () => {
@@ -59,7 +62,6 @@ export default function App() {
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
