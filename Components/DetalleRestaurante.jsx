@@ -7,7 +7,7 @@ const DetalleRestaurante = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get(`http://localhost:8000/restaurantes/${id}`)
+        axios.get(`http://172.31.45.35:8000/restaurantes/${id}`)
             .then((response) => {
                 setRestaurante(response.data);
             })

@@ -57,3 +57,8 @@ Los permisos deben ser declarados en el `AndroidManifest.xml`.
 - **2 Casos en los que no se utiliza el estado en un componente**:
   - La edad de una persona que se puede calcular a partir de su fecha de nacimiento.
   - Cuando se utilizan las props para pasar datos a un componente.
+
+
+### Instalar el módulo de geo-localización
+
+- expo install expo-location
