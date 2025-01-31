@@ -19,6 +19,9 @@ export default function App() {
   
 
   const Stack = createNativeStackNavigator();
+
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
   
   
 
@@ -45,6 +48,12 @@ export default function App() {
           <Stack.Screen name="EditarRestaurante" component={EditarRestaurante}
           options={{ title: 'Editar Restaurante' }} />
       </Stack.Navigator>
+      <View>
+        <Text>{errorMsg ? errorMsg :
+          JSON.stringify(location.coords.longitude)}</Text>
+        <Text>{errorMsg ? errorMsg :
+          JSON.stringify(location.coords.latitude)}</Text>
+      </View>
     </NavigationContainer>
   );
 }

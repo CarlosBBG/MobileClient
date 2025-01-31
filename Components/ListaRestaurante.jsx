@@ -9,7 +9,7 @@ function ListaRestaurantes() {
   // Función para cargar restaurantes
   const cargarRestaurantes = () => {
     axios
-      .get("http://172.29.55.55:8000/restaurantes")
+      .get("http://192.168.1.17:8000/restaurantes")
       .then((response) => {
         setRestaurantes(response.data);
       })

@@ -12,7 +12,7 @@ const EditarRestaurante = ({ navigation, route }) => {
     const id = route.params.id;
 
     useEffect(() => {
-        axios.get(`http://172.29.55.55:8000/restaurantes/${id}`)
+        axios.get(`http://192.168.1.17:8000/restaurantes/${id}`)
             .then((response) => {
                 setRestaurante(response.data);
             })
@@ -29,7 +29,7 @@ const EditarRestaurante = ({ navigation, route }) => {
     };
 
     const handleSubmit = () => {
-        axios.put(`http://172.29.55.55:8000/restaurantes/${id}`, restaurante)
+        axios.put(`http://192.168.1.17:8000/restaurantes/${id}`, restaurante)
             .then(() => {
                 navigation.navigate("ListaRestaurantes");
             })
