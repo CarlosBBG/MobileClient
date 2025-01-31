@@ -2,7 +2,11 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import ListaRestaurantes from './Components/ListaRestaurante';
 import React, { useEffect, useState } from 'react';
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import axios from 'axios';
+import DetalleRestaurante from './Components/DetalleRestaurante';
+import EditarRestaurante from './Components/EditarRestaurante';
 
 export default function App() {
 
@@ -12,32 +16,25 @@ export default function App() {
   //useState tiene como parámetro el valor inicial del estado
   //useState retorna un arreglo con dos elementos, el primero es el valor y el segundo es una función para modificar el valor
 
-  const [restaurantes, setRestaurantes] = useState([]);
+  
 
-  // Función para cargar restaurantes
-  const cargarRestaurantes = () => {
-    axios
-      .get("http://172.29.42.234:8000/restaurantes")
-      .then((response) => {
-        setRestaurantes(response.data);
-      })
-      .catch((error) => {
-        console.log("No se puede cargar los restaurantes", error);
-      });
-  };
+  const Stack = createNativeStackNavigator();
 
   // Ejecutar cargarRestaurantes solo una vez al montar el componente
-  useEffect(() => {
-    cargarRestaurantes();
-  }, [0]); // Array vacío asegura que se ejecute solo al montar
+  
+  
 
   return (
-    <View style={styles.container}>
-      <ListaRestaurantes
-        restaurantes={restaurantes}
-        onRecargar={cargarRestaurantes} // Pasar la función sin memoización
-      />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="ListaRestaurantes" component={ListaRestaurantes}
+          options={{ title: 'Lista de Restaurantes' }} /> 
+        <Stack.Screen name="DetalleRestaurante" component={DetalleRestaurante}
+          options={{ title: 'Detalle del Restaurante' }} />
+          <Stack.Screen name="EditarRestaurante" component={EditarRestaurante}
+          options={{ title: 'Editar Restaurante' }} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 

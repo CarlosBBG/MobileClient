@@ -1,29 +1,54 @@
 import React, { useEffect, useState } from 'react';
 import ItemRestaurante from "./ItemRestaurante";
-import { View } from 'react-native';
+import { View, StyleSheet, FlatList } from 'react-native';
+import axios from 'axios';
 
-function ListaRestaurantes({ restaurantes, onRecargar }) {
-  
-    // Cargar restaurantes cuando se monte el componente
-    useEffect(() => {
-      onRecargar();
-    }, []);
-  
-  
-    return (
-      <View>
-        {restaurantes.map((rest, index) => (
-          <ItemRestaurante 
-            key={index}
-            id={rest.id}
-            nombre={rest.nombre}
-            tipo={rest.tipo}
-            horario={rest.horario}
-            imagen={rest.imagen}
-          />
-        ))}
-      </View>
-    );
-  }
-  
-  export default ListaRestaurantes;
+function ListaRestaurantes() {
+  const [restaurantes, setRestaurantes] = useState([]);
+
+  // Función para cargar restaurantes
+  const cargarRestaurantes = () => {
+    axios
+      .get("http://172.29.55.55:8000/restaurantes")
+      .then((response) => {
+        setRestaurantes(response.data);
+      })
+      .catch((error) => {
+        console.log("No se puede cargar los restaurantes", error);
+      });
+  };
+
+  useEffect(() => {
+    cargarRestaurantes();
+  }, []); // Array vacío asegura que se ejecute solo al montar
+
+  const renderItem = ({ item }) => (
+    <ItemRestaurante
+      id={item.id}
+      nombre={item.nombre}
+      tipo={item.tipo}
+      horario={item.horario}
+      imagen={item.imagen}
+    />
+  );
+
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={restaurantes}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={renderItem}
+      />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 10,
+    backgroundColor: '#f8f8f8',
+  },
+});
+
+export default ListaRestaurantes;

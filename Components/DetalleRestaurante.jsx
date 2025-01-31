@@ -1,13 +1,14 @@
+import React, {useState, useEffect} from "react";
+import { View, Text, Image,Button } from "react-native";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
 
-const DetalleRestaurante = () => {
+const DetalleRestaurante = ({navigation, route}) => {
+
     const [restaurante, setRestaurante] = useState({});
-    const { id } = useParams();
-    const navigate = useNavigate();
+    const id = route.params.id;
 
     useEffect(() => {
-        axios.get(`http://localhost:8000/restaurantes/${id}`)
+        axios.get(`http://172.29.55.55:8000/restaurantes/${id}`)
             .then((response) => {
                 setRestaurante(response.data);
             })
@@ -19,13 +20,14 @@ const DetalleRestaurante = () => {
     const { nombre, tipo, horario, imagen } = restaurante;
 
     return (
-        <div>
-            <h3>{nombre}</h3>
-            <p>{`Tipo de comida: ${tipo}`}</p>
-            <p>{`Horario: ${horario}`}</p>
-            {imagen && <img src={imagen} alt={nombre} />}
-            <button onClick={() => navigate(`/editar/${id}`)}>Editar</button>
-        </div>
+        <View>
+            <Text>{nombre}</Text>
+            <Text>{`Tipo de Comida: ${tipo}`}</Text>
+            <Text>{`Horario: ${horario}`}</Text>
+            <Image source={{uri: imagen}} style={{width: 200, height: 200}} />
+            <Button title="Editar" onPress={() => navigation.navigate("EditarRestaurante", { id: id })} />
+            
+        </View>
     );
 };
 
