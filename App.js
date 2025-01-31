@@ -2,7 +2,11 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import ListaRestaurantes from './Components/ListaRestaurante';
 import React, { useEffect, useState } from 'react';
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import axios from 'axios';
+import DetalleRestaurante from './Components/DetalleRestaurante';
+import EditarRestaurante from './Components/EditarRestaurante';
 import * as Location from 'expo-location';
 
 export default function App() {
@@ -12,27 +16,11 @@ export default function App() {
   //El componente se vuelve a renderizar debido a las props y estas no se almacenan en el estado
   //useState tiene como parámetro el valor inicial del estado
   //useState retorna un arreglo con dos elementos, el primero es el valor y el segundo es una función para modificar el valor
+  
 
-  const [restaurantes, setRestaurantes] = useState([]);
-  const [location, setLocation] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
-
-  // Función para cargar restaurantes
-  const cargarRestaurantes = () => {
-    axios
-      .get("http://172.31.45.35:8000/restaurantes")
-      .then((response) => {
-        setRestaurantes(response.data);
-      })
-      .catch((error) => {
-        console.log("No se puede cargar los restaurantes", error);
-      });
-  };
-
-  // Ejecutar cargarRestaurantes solo una vez al montar el componente
-  useEffect(() => {
-    cargarRestaurantes();
-  }, [0]); // Array vacío asegura que se ejecute solo al montar
+  const Stack = createNativeStackNavigator();
+  
+  
 
   useEffect(() => {
     (async () => {
@@ -48,18 +36,16 @@ export default function App() {
 
 
   return (
-    <View style={styles.container}>
-      <ListaRestaurantes
-        restaurantes={restaurantes}
-        onRecargar={cargarRestaurantes} // Pasar la función sin memoización
-      />
-      <View>
-        <Text>{errorMsg ? errorMsg :
-          JSON.stringify(location.coords.longitude)}</Text>
-        <Text>{errorMsg ? errorMsg :
-          JSON.stringify(location.coords.latitude)}</Text>
-      </View>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="ListaRestaurantes" component={ListaRestaurantes}
+          options={{ title: 'Lista de Restaurantes' }} /> 
+        <Stack.Screen name="DetalleRestaurante" component={DetalleRestaurante}
+          options={{ title: 'Detalle del Restaurante' }} />
+          <Stack.Screen name="EditarRestaurante" component={EditarRestaurante}
+          options={{ title: 'Editar Restaurante' }} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 const styles = StyleSheet.create({
